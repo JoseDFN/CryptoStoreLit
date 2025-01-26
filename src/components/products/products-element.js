@@ -1,5 +1,5 @@
 import {LitElement, html} from 'lit';
-import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 import { products } from '../../data/products';
 export class ProductElement extends LitElement {
     static properties={
@@ -47,7 +47,7 @@ export class ProductElement extends LitElement {
     render(){
         return html /*html*/`
     <style>
-      @import url('../../../node_modules/bootstrap/dist/css/bootstrap.min.css');
+      @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
     </style>
     <div class="container mt-4">
       <div class="card">

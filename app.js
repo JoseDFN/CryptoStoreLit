@@ -1,4 +1,4 @@
-import './node_modules/bootstrap/dist/js/bootstrap.min'
+import './node_modules/bootstrap/dist/js/bootstrap.min.js'
 import './src/components/header/header-element.js'
 import './src/components/products/products-element.js'
 import './src/components/summary/summary-element.js'

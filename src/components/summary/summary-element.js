@@ -70,7 +70,7 @@ export class SummaryElement extends LitElement {
     
     return html`
     <style>
-      @import url('../../../node_modules/bootstrap/dist/css/bootstrap.min.css');
+      @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
     </style>
     <div class="container mt-4">
       <h4 class="mb-3">Productos Agregados</h4>
