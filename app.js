@@ -1,3 +1,5 @@
 import './node_modules/bootstrap/dist/js/bootstrap.min'
 import './src/components/header/header-element.js'
 import './src/components/products/products-element.js'
+import './src/components/summary/summary-element.js'
+import './src/components/detailinvoice/detailinvoice-element.js'

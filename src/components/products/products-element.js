@@ -34,7 +34,7 @@ export class ProductElement extends LitElement {
             detail: { code, name, costPerUnit, quantity: this.quantity, subtotal },
             bubbles: true,
             composed: true,
-          }));
+          }));          
     
           // Opcional: Limpiar la quantity después de agregar
           this.quantity = 1;
