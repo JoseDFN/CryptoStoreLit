@@ -1,43 +1,51 @@
+// Import LitElement, html from lit
 import { LitElement, html } from 'lit';
 
+// Define the DetailInvoiceElement class that extends LitElement
 export class DetailInvoiceElement extends LitElement {
+  // Define static properties for the class
   static properties = {
     subtotal: { type: Number },
     iva: { type: Number },
     total: { type: Number },
   };
 
+  // Constructor for the class
   constructor() {
     super();
     this.subtotal = 0;
     this.iva = 0;
     this.total = 0;
 
-    // Manejar el evento personalizado
+    // Bind the handleResumenActualizado method to this instance
     this.handleResumenActualizado = this.handleResumenActualizado.bind(this);
   }
 
+  // Method to handle the connectedCallback lifecycle event
   connectedCallback() {
     super.connectedCallback();
 
-    // Escuchar el evento 'resumen-actualizado'
+    // Listen for the 'resumen-actualizado' event
     document.addEventListener('resumen-actualizado', this.handleResumenActualizado);
   }
 
+  // Method to handle the disconnectedCallback lifecycle event
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    // Eliminar el evento al desconectar el componente
+    // Remove the event listener when the component is disconnected
     document.removeEventListener('resumen-actualizado', this.handleResumenActualizado);
   }
 
+  // Method to handle the 'resumen-actualizado' event
   handleResumenActualizado(event) {
     const { subtotal, total } = event.detail;
     this.subtotal = subtotal;
-    this.iva = subtotal * 0.19; // 19% de IVA
+    this.iva = subtotal * 0.19; // Assuming an IVA of 19%
     this.total = total;
   }
 
+  // Method to generate the invoice
   generarFactura() {
     const headerElement = document.querySelector('header-element');
     const summaryElement = document.querySelector('summary-element');
@@ -69,27 +77,30 @@ export class DetailInvoiceElement extends LitElement {
     };
   }
 
+  // Method to save the invoice to local storage
   guardarLocalStorage(factura) {
     const facturas = JSON.parse(localStorage.getItem('facturas')) || [];
     facturas.push(factura);
     localStorage.setItem('facturas', JSON.stringify(facturas));
   }
 
+  // Method to handle the 'Pagar' button click event
   handlePagarClick() {
     const factura = this.generarFactura();
     if (factura) {
       this.guardarLocalStorage(factura);
       alert('Factura guardada exitosamente.');
-  
-      // Limpiar campos después de guardar
+
+      // Clear the fields after saving
       this.limpiarCampos();
     } else {
       alert('Error: Verifique que todos los campos estén completos.');
     }
   }
-  
+
+  // Method to clear the fields in the HeaderElement and SummaryElement
   limpiarCampos() {
-    // Reiniciar campos del HeaderElement
+    // Clear the fields in the HeaderElement
     const headerElement = document.querySelector('header-element');
     if (headerElement) {
       headerElement.numberInvoice = new Date().getTime().toString(16).toUpperCase();
@@ -100,50 +111,52 @@ export class DetailInvoiceElement extends LitElement {
         }
       });
     }
-  
-    // Reiniciar campos del SummaryElement
+
+    // Clear the fields in the SummaryElement
     const summaryElement = document.querySelector('summary-element');
     if (summaryElement) {
       summaryElement.products = [];
       summaryElement.total = 0;
-      summaryElement.requestUpdate(); // Actualizar manualmente la interfaz
+      summaryElement.requestUpdate(); // Manually update the interface
     }
-  
-    // Reiniciar los totales del DetailInvoiceElement
+
+    // Reset the totals in the DetailInvoiceElement
     this.subtotal = 0;
     this.iva = 0;
     this.total = 0;
-  
-    // Solicitar actualización de la interfaz
-    this.requestUpdate();
-  }  
 
+    // Request an update to the interface
+    this.requestUpdate();
+  }
+
+  // Method to render the component
   render() {
     return html`
-  <style>
-    @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
-  </style>
-  <div class="container mt-4">
-    <div class="card">
-      <div class="card-body text-center">
-        <h5 class="mb-3">Resumen de Factura</h5>
-        <div class="mb-2">
-          <strong>Subtotal:</strong> $<span>${this.subtotal.toFixed(2)}</span>
+      <style>
+        @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+      </style>
+      <div class="container mt-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="mb-3">Resumen de Factura</h5>
+            <div class="mb-2">
+              <strong>Subtotal:</strong> $<span>${this.subtotal.toFixed(2)}</span>
+            </div>
+            <div class="mb-2">
+              <strong>IVA (19%):</strong> $<span>${this.iva.toFixed(2)}</span>
+            </div>
+            <div class="mb-3">
+              <strong>Total a Pagar:</strong> $<span>${this.total.toFixed(2)}</span>
+            </div>
+            <button type="button" class="btn btn-primary col-12 btn-lg" @click="${this.handlePagarClick}">
+              Pagar
+            </button>
+          </div>
         </div>
-        <div class="mb-2">
-          <strong>IVA (19%):</strong> $<span>${this.iva.toFixed(2)}</span>
-        </div>
-        <div class="mb-3">
-          <strong>Total a Pagar:</strong> $<span>${this.total.toFixed(2)}</span>
-        </div>
-        <button type="button" class="btn btn-primary col-12 btn-lg" @click="${this.handlePagarClick}">
-          Pagar
-        </button>
       </div>
-    </div>
-  </div>
     `;
   }
 }
 
+// Define the custom element
 customElements.define('detailinvoice-element', DetailInvoiceElement);
